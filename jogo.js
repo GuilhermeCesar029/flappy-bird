@@ -78,6 +78,12 @@ const flappyBird = {
     altura:24,
     x: 10,
     y: 50,
+    gravidade: 0.25,
+    velocidade: 0,
+    atualiza() {
+        flappyBird.velocidade = flappyBird.velocidade + flappyBird.gravidade; //velocidade que ele cai
+        flappyBird.y =  flappyBird.y + flappyBird.velocidade; //para o flappyBird cair 
+    },
     desenha() {
         //pegando uma parte da imagem sprintes.
         contexto.drawImage(
@@ -91,11 +97,12 @@ const flappyBird = {
 };
 
 //fazendo um loop, para carregar a imagem
-function loop(){    
+function loop(){   
+    flappyBird.atualiza(); 
     planoDeFundo.desenha();
     chao.desenha();
     flappyBird.desenha();
-    
+
 
     requestAnimationFrame(loop);
 }
