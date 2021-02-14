@@ -1,4 +1,5 @@
 console.log('Flappy Bird');
+console.log('Desenvolvido Por: Guilherme César');
 
 //criando nova imagem
 const sprites = new Image();
@@ -96,16 +97,76 @@ const flappyBird = {
     },
 };
 
+// [Mensagem de inicio]
+const mensagemGetReady = {
+    sX: 134,
+    sY: 0,
+    w: 174,
+    h: 152,
+    x: (canvas.width / 2) - 174 / 2,
+    y: 50,
+    desenha() {
+        contexto.drawImage(
+            sprites,
+            mensagemGetReady.sX, mensagemGetReady.sY,
+            mensagemGetReady.w, mensagemGetReady.h,
+            mensagemGetReady.x, mensagemGetReady.y,
+            mensagemGetReady.w, mensagemGetReady.h
+        );
+    }
+}
+
+//
+//[Telas]
+//
+let telaAtiva = {};
+function mudaParaTela(novaTela){
+    telaAtiva = novaTela;
+}
+const Telas = {
+    INICIO: {
+        desenha(){
+            planoDeFundo.desenha();
+            chao.desenha();
+            flappyBird.desenha();
+            mensagemGetReady.desenha();
+        },
+        click(){
+            mudaParaTela(Telas.JOGO);
+        },
+        atualiza(){
+
+        }
+    }
+};
+
+//inserindo tela do jogo no objeto de Telas
+Telas.JOGO = {
+    desenha(){
+        planoDeFundo.desenha();
+        chao.desenha();
+        flappyBird.desenha();
+    },
+    atualiza(){
+        flappyBird.atualiza();
+    }
+}
+
 //fazendo um loop, para carregar a imagem
 function loop(){   
-    flappyBird.atualiza(); 
-    planoDeFundo.desenha();
-    chao.desenha();
-    flappyBird.desenha();
-
+   telaAtiva.desenha();
+   telaAtiva.atualiza();
 
     requestAnimationFrame(loop);
 }
 
+//verificando se existe algum click na tela
+window.addEventListener('click', function(){
+    if(telaAtiva.click){ 
+        telaAtiva.click(); //chama a funçap de click da tela atual
+    }
+});
+
+mudaParaTela(Telas.INICIO);
 //executando a função.
 loop();
