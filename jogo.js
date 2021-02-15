@@ -1,6 +1,9 @@
 console.log('Flappy Bird');
 console.log('Desenvolvido Por: Guilherme César');
 
+const som_HIT = new Audio();
+som_HIT.src = './efeitos/hit.wav'
+
 //criando nova imagem
 const sprites = new Image();
 sprites.src = './sprites.png';
@@ -101,7 +104,12 @@ function criaFlappyBird(){
         atualiza() {
             if(fazColisao(flappyBird, chao)){
                 console.log('Fez colisão');
+                som_HIT.play();
+
+                setTimeout(() => {
                 mudaParaTela(Telas.INICIO);
+
+                }, 500);
                 return;
             }
 
