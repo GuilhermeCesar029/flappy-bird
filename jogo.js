@@ -79,8 +79,13 @@ const flappyBird = {
     altura:24,
     x: 10,
     y: 50,
+    pulo: 4.6,
     gravidade: 0.25,
     velocidade: 0,
+    pula(){
+        console.log('pula');
+        flappyBird.velocidade = - flappyBird.pulo; //quando pular a vlocidade volta para -4.6 
+    },
     atualiza() {
         flappyBird.velocidade = flappyBird.velocidade + flappyBird.gravidade; //velocidade que ele cai
         flappyBird.y =  flappyBird.y + flappyBird.velocidade; //para o flappyBird cair 
@@ -146,6 +151,9 @@ Telas.JOGO = {
         planoDeFundo.desenha();
         chao.desenha();
         flappyBird.desenha();
+    },
+    click(){
+        flappyBird.pula();
     },
     atualiza(){
         flappyBird.atualiza();
