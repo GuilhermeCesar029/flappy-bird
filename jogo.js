@@ -116,12 +116,10 @@ function criaFlappyBird(){
         },
         atualiza() {
             if(fazColisao(flappyBird, globais.chao)){
-                console.log('Fez colisão');
                 som_HIT.play();
 
                 setTimeout(() => {
-                mudaParaTela(Telas.INICIO);
-
+                    mudaParaTela(Telas.INICIO);
                 }, 500);
                 return;
             }
@@ -226,8 +224,29 @@ function criaCanos() {
                     canoChaoX, canoChaoY,
                     canos.largura, canos.altura,
                 )
-            })
-            
+
+                par.canoCeu = {
+                    x: canoCeuX,
+                    y: canos.altura + canoCeuY
+                }
+                par.canoChao = {
+                    x: canoChaoX,
+                    y: canoChaoY
+                }
+            })            
+        },
+        temColisaoComOFlappyBird(par){
+            const cabecaDoFlappy = globais.flappyBird.y; 
+            const peDoFlappy = globais.flappyBird.y + globais.flappyBird.altura;
+
+            //verifica se teve colisao no cano de cima e no de baixo
+            if(globais.flappyBird.x >= par.x){
+                if(cabecaDoFlappy <= par.canoCeu.y || peDoFlappy >= par.canoChao.y){
+                    return true;
+                }
+            }
+
+            return false;
         },
         pares: [],
         atualiza(){
@@ -243,6 +262,16 @@ function criaCanos() {
             canos.pares.forEach(function(par){
                 par.x -= 2;
 
+                //verificando se o flappyBird tem colisao com o cano
+                if(canos.temColisaoComOFlappyBird(par)){
+                    som_HIT.play();
+
+                    setTimeout(() => {
+                        mudaParaTela(Telas.INICIO);                    
+                    }, 500);
+                    return;
+                }
+
                 //excluindo os canos da memoria. shift() exlui o primeiro elemento do array
                 if(par.x + canos.largura <= 0){
                     canos.pares.shift();
@@ -251,7 +280,6 @@ function criaCanos() {
 
         }
     }
-
     return canos;
 }
 
@@ -278,17 +306,15 @@ const Telas = {
         },
         desenha(){
             planoDeFundo.desenha();            
-            globais.flappyBird.desenha();
-            globais.canos.desenha();
+            globais.flappyBird.desenha();            
             globais.chao.desenha();
-            //mensagemGetReady.desenha();
+            mensagemGetReady.desenha();
         },
         click(){
             mudaParaTela(Telas.JOGO);
         },
         atualiza(){
             globais.chao.atualiza();
-            globais.canos.atualiza();
         }
     }
 };
@@ -297,6 +323,7 @@ const Telas = {
 Telas.JOGO = {
     desenha(){
         planoDeFundo.desenha();
+        globais.canos.desenha();
         globais.chao.desenha();
         globais.flappyBird.desenha();
     },
@@ -304,6 +331,8 @@ Telas.JOGO = {
         globais.flappyBird.pula();
     },
     atualiza(){
+        globais.canos.atualiza();
+        globais.chao.atualiza();
         globais.flappyBird.atualiza();
     }
 }
