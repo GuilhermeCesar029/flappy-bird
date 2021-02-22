@@ -197,6 +197,7 @@ const mensagemGameOver = {
             mensagemGameOver.x, mensagemGameOver.y,
             mensagemGameOver.w, mensagemGameOver.h
         );
+        
     }
 }
 
@@ -252,6 +253,9 @@ function criaCanos() {
                 }
             })            
         },
+
+
+        
         temColisaoComOFlappyBird(par){
             const cabecaDoFlappy = globais.flappyBird.y; 
             const peDoFlappy = globais.flappyBird.y + globais.flappyBird.altura;
@@ -302,6 +306,7 @@ function criaCanos() {
 function criaPlacar(){
     const placar = {
         pontuacao: 0,
+        pontuacaoTotal: 0,
         desenha(){
             contexto.font = '35px "VT323';
             contexto.textAlign = 'right';
@@ -313,9 +318,15 @@ function criaPlacar(){
             const passouOIntervalo = frames % intervaloDeFrames === 0;
 
             if(passouOIntervalo){
-                placar.pontuacao += 1;
+                pontuacaoTotal = placar.pontuacao += 1;                
             }
-        }        
+        }, 
+        desenhaPontuacao(){
+            contexto.font = '35px "VT323';
+            contexto.textAlign = 'right';
+            contexto.fillStyle = 'white';
+            contexto.fillText(`${placar.pontuacao}`, (canvas.width / 2) + 80, 150);
+        }  
     }
 
     return placar;
@@ -384,6 +395,7 @@ Telas.JOGO = {
 Telas.GAME_OVER = {
     desenha(){
         mensagemGameOver.desenha();
+        globais.placar.desenhaPontuacao();
     },
     atualiza(){
 
