@@ -306,7 +306,7 @@ function criaCanos() {
 function criaPlacar(){
     const placar = {
         pontuacao: 0,
-        pontuacaoTotal: 0,
+        pontuacaoAtual: 0,
         desenha(){
             contexto.font = '35px "VT323';
             contexto.textAlign = 'right';
@@ -318,15 +318,22 @@ function criaPlacar(){
             const passouOIntervalo = frames % intervaloDeFrames === 0;
 
             if(passouOIntervalo){
-                pontuacaoTotal = placar.pontuacao += 1;                
+                placar.pontuacao += 1;
             }
+            placar.pontuacaoAtual = placar.pontuacao;
         }, 
         desenhaPontuacao(){
             contexto.font = '35px "VT323';
             contexto.textAlign = 'right';
             contexto.fillStyle = 'white';
             contexto.fillText(`${placar.pontuacao}`, (canvas.width / 2) + 80, 150);
-        }  
+        }, 
+        desenhaPontuacaoBest(){
+                contexto.font = '35px "VT323';
+                contexto.textAlign = 'right';
+                contexto.fillStyle = 'white';
+                contexto.fillText(`${placar.pontuacao}`, (canvas.width / 2) + 80, 190);
+        } 
     }
 
     return placar;
@@ -396,6 +403,7 @@ Telas.GAME_OVER = {
     desenha(){
         mensagemGameOver.desenha();
         globais.placar.desenhaPontuacao();
+        globais.placar.desenhaPontuacaoBest();
     },
     atualiza(){
 
